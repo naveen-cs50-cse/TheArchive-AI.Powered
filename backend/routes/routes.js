@@ -20,17 +20,17 @@ function chunkText(text) {
     let maxWords;
     let overlap;
     if (totalWords < 100) {
-        maxWords = 20;
+        maxWords = 50;
         overlap = 5;
     } else if (totalWords < 200) {
         maxWords = 100;
-        overlap = 20;
+        overlap = 25;
     } else if (totalWords < 1000) {
-        maxWords = 150;
-        overlap = 30;
+        maxWords = 200;
+        overlap = 50;
     } else {
         maxWords = 250;
-        overlap = 50;
+        overlap = 70;
     }
 
     const chunks = [];
@@ -45,6 +45,7 @@ function chunkText(text) {
             }
         }
     }
+
     return chunks;
 }
 
@@ -101,7 +102,7 @@ router.post('/write', authMiddleware, async (req, res) => {
 
         const chunks = chunkText(text);
         let chunksCreated = 0;
-
+        let x=0;
         for (const chunk of chunks) {
             try {
                 const embedding = await getembedding(chunk);
@@ -146,13 +147,13 @@ router.post('/query', authMiddleware, async (req, res) => {
             include: { note: true }
         });
 
-        if (chunks.length === 0) {
-            return res.json({
-                answer: "No notes found. Please add some notes or upload a PDF first.",
-                sources: [],
-                success: true
-            });
-        }
+        // if (chunks.length === 0) {
+        //     return res.json({
+        //         answer: "No notes found. Please add some notes or upload a PDF first.",
+        //         sources: [],
+        //         success: true
+        //     });
+        // }
 
         const parsed = chunks.map(c => ({
             ...c,
@@ -269,7 +270,7 @@ router.post('/upload-pdf', authMiddleware, upload.single('pdf'), async (req, res
         for (const chunk of chunks) {
             try {
                 const embedding = await getembedding(chunk);
-                if (embedding && embedding.length > 0) {
+                if (embedding) {
                     await prisma.chunk.create({
                         data: {
                             text: chunk,
@@ -277,13 +278,14 @@ router.post('/upload-pdf', authMiddleware, upload.single('pdf'), async (req, res
                             noteId: note.id
                         }
                     });
-                    chunksCreated++;
+                    chunksCreated=chunksCreated+1;
                 }
+
             } catch (chunkErr) {
                 console.log("Chunk creation error:", chunkErr);
             }
         }
-
+    
         res.json({
             msg: "PDF uploaded and processed successfully",
             fileName: req.file.originalname,

@@ -78,7 +78,7 @@
             outline: none;
         }
 
-        .btn-search, .btn-show, .btn-save, .btn-shownav {
+        .btn-search, .btn-show, .btn-save, .btn-shownav, .btn-logout {
             background: var(--ink);
             color: var(--parchment-light);
             font-family: 'Special Elite', cursive;
@@ -87,6 +87,15 @@
             cursor: pointer;
             transition: 0.2s;
             text-transform: uppercase;
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: fit-content;
+            padding: 0.5rem 0.9rem;
         }
 
         .btn-search {

@@ -229,6 +229,39 @@ async function handleAuth() {
     }
 }
 
+function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+
+    const authModal = document.getElementById("authModal");
+    if (authModal) authModal.style.display = "flex";
+
+    const notes2 = document.getElementById("notes2");
+    if (notes2) notes2.innerHTML = "";
+
+    const queryInput = document.getElementById("query");
+    if (queryInput) queryInput.value = "";
+
+    const inputField = document.getElementById("input");
+    if (inputField) inputField.value = "";
+
+    const authError = document.getElementById("authError");
+    if (authError) {
+        authError.style.display = "none";
+        authError.innerText = "";
+    }
+
+    const authEmail = document.getElementById("authEmail");
+    const authPassword = document.getElementById("authPassword");
+    const authName = document.getElementById("authName");
+    if (authEmail) authEmail.value = "";
+    if (authPassword) authPassword.value = "";
+    if (authName) authName.value = "";
+
+    switchTab("login");
+}
+
 async function uploadPdf() {
     if (isLoading) return;
     

@@ -2,6 +2,8 @@
 
 A full-stack knowledge vault for saving notes, uploading PDFs, and asking questions over your own content using semantic search and vector embeddings.
 
+live demo link : https://naveen-cs50-cse.github.io/TheArchive-AI.Powered/
+
 The project includes:
 - User authentication with signup/login and JWT-protected API routes
 - Note capture, PDF ingestion, and document chunk embedding
